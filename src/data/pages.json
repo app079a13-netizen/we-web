@@ -1,0 +1,31 @@
+{
+  "56c6756c-3da8-418b-85b2-527d2369ddc9": {
+    "id": "56c6756c-3da8-418b-85b2-527d2369ddc9",
+    "paths": {
+      "en": "home",
+      "default": "home"
+    },
+    "isHomePage": true
+  },
+  "0dd52af1-1bc3-4e85-989d-df27895314a4": {
+    "id": "0dd52af1-1bc3-4e85-989d-df27895314a4",
+    "paths": {
+      "en": "admin",
+      "default": "admin"
+    }
+  },
+  "11102cd6-d2da-463d-a705-97d8aa801699": {
+    "id": "11102cd6-d2da-463d-a705-97d8aa801699",
+    "paths": {
+      "ar": "paymant",
+      "default": "paymant"
+    }
+  },
+  "ec9a8873-31ad-45aa-b076-58bb009e3a97": {
+    "id": "ec9a8873-31ad-45aa-b076-58bb009e3a97",
+    "paths": {
+      "ar": "404",
+      "default": "404"
+    }
+  }
+}

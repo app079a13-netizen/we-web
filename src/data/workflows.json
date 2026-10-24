@@ -1,0 +1,714 @@
+[
+  {
+    "id": "7316281d-226f-412b-8e23-ea5d82280048",
+    "name": "Delete All Orders",
+    "parameters": [],
+    "actions": {
+      "__DELETE_ALL_ROWS__": {
+        "id": "__DELETE_ALL_ROWS__",
+        "name": "Delete All Orders From Table",
+        "next": "__RETURN_CLEAR_RESULT__",
+        "type": "table-delete",
+        "filters": {
+          "link": "$and",
+          "conditions": [
+            {
+              "field": "id",
+              "value": "",
+              "operator": "$ne:null"
+            }
+          ]
+        },
+        "tableName": "nooon gadwal",
+        "deleteMode": "by-filters",
+        "returnData": true,
+        "__wwdescription": "حذف جميع الطلبات المسجلة في جدول nooon gadwal دفعة واحدة"
+      },
+      "__RETURN_CLEAR_RESULT__": {
+        "id": "__RETURN_CLEAR_RESULT__",
+        "args": {
+          "body": {
+            "code": "const deleted = context.workflow['__DELETE_ALL_ROWS__']?.result || [];\nreturn { success: true, deletedCount: deleted.length };",
+            "__wwtype": "js"
+          },
+          "status": 200,
+          "contentType": "application/json"
+        },
+        "name": "Return Delete All Result",
+        "next": null,
+        "type": "return-response",
+        "__wwdescription": "إرجاع عدد السجلات التي تم حذفها"
+      }
+    },
+    "firstAction": "__DELETE_ALL_ROWS__",
+    "firstErrorAction": null,
+    "meta": {
+      "path": "/nooon-gadwal/delete-all-rows",
+      "method": "POST",
+      "security": {
+        "accessRule": "public"
+      }
+    },
+    "trigger": "ww-api"
+  },
+  {
+    "id": "d54301f0-db46-4ff8-80ab-f6f4204ad007",
+    "name": "Get Row",
+    "parameters": [
+      {
+        "name": "Row ID",
+        "type": "string"
+      }
+    ],
+    "actions": {
+      "0eb50d39-6715-4a28-9028-e941c87ad6fc": {
+        "id": "0eb50d39-6715-4a28-9028-e941c87ad6fc",
+        "next": "6a9be2d8-e0ed-439e-9327-5d3220b44152",
+        "type": "table-select",
+        "filters": {
+          "link": "$and",
+          "conditions": [
+            {
+              "field": "id",
+              "value": {
+                "code": "context.parameters['Row ID']",
+                "__wwtype": "f"
+              },
+              "operator": "$eq"
+            }
+          ]
+        },
+        "tableName": "nooon gadwal"
+      },
+      "6a9be2d8-e0ed-439e-9327-5d3220b44152": {
+        "id": "6a9be2d8-e0ed-439e-9327-5d3220b44152",
+        "args": {
+          "body": {
+            "code": "context.workflow['0eb50d39-6715-4a28-9028-e941c87ad6fc'].result",
+            "__wwtype": "f"
+          },
+          "status": 200,
+          "contentType": "application/json"
+        },
+        "type": "return-response"
+      }
+    },
+    "firstAction": "0eb50d39-6715-4a28-9028-e941c87ad6fc",
+    "firstErrorAction": null,
+    "meta": {
+      "path": "/nooon-gadwal/get-row",
+      "method": "GET",
+      "security": {
+        "accessRule": "public"
+      }
+    },
+    "trigger": "ww-api"
+  },
+  {
+    "id": "c40a37aa-aed5-47d7-b4cf-e55f49c2c7ac",
+    "name": "Delete Row",
+    "parameters": [
+      {
+        "key": "row_id",
+        "name": "row_id",
+        "type": "string",
+        "required": false,
+        "description": "معرف الطلب المراد حذفه"
+      },
+      {
+        "key": "Row ID",
+        "name": "Row ID",
+        "type": "string",
+        "required": false,
+        "description": "معرف الصف (توافق إضافي)"
+      }
+    ],
+    "actions": {
+      "33e0c1c1-ec43-4c65-866f-7e0ab6da79a1": {
+        "id": "33e0c1c1-ec43-4c65-866f-7e0ab6da79a1",
+        "args": {
+          "body": {
+            "code": "const deleted = context.workflow['9d48b3cf-284c-4ffc-a5ea-042ce2bb6196']?.result || [];\nreturn { success: true, deletedCount: deleted.length, deleted };",
+            "__wwtype": "js"
+          },
+          "status": 200,
+          "contentType": "application/json"
+        },
+        "name": "Return Deleted Order",
+        "next": null,
+        "type": "return-response",
+        "__wwdescription": "إرجاع تأكيد حذف الطلب"
+      },
+      "9d48b3cf-284c-4ffc-a5ea-042ce2bb6196": {
+        "id": "9d48b3cf-284c-4ffc-a5ea-042ce2bb6196",
+        "name": "Delete Single Order By ID",
+        "next": "33e0c1c1-ec43-4c65-866f-7e0ab6da79a1",
+        "type": "table-delete",
+        "filters": {
+          "link": "$and",
+          "conditions": [
+            {
+              "field": "id",
+              "value": {
+                "code": "return context.parameters['row_id'] || context.parameters['Row ID'];",
+                "__wwtype": "js"
+              },
+              "operator": "$eq"
+            }
+          ]
+        },
+        "tableName": "nooon gadwal",
+        "deleteMode": "by-filters",
+        "returnData": true,
+        "__wwdescription": "حذف طلب محدد من جدول nooon gadwal بواسطة معرف الصف (id)"
+      }
+    },
+    "firstAction": "9d48b3cf-284c-4ffc-a5ea-042ce2bb6196",
+    "firstErrorAction": null,
+    "meta": {
+      "path": "/nooon-gadwal/delete-row",
+      "method": "POST",
+      "security": {
+        "accessRule": "public"
+      }
+    },
+    "trigger": "ww-api"
+  },
+  {
+    "id": "92bfcaa0-365c-42bf-bd81-989ce87e2b20",
+    "name": "Update Row",
+    "parameters": [
+      {
+        "name": "Row ID",
+        "type": "string"
+      },
+      {
+        "name": "nooon gadwal",
+        "type": "table-link",
+        "columns": []
+      }
+    ],
+    "actions": {
+      "736367b0-95e4-4379-8147-1b210a6bab42": {
+        "id": "736367b0-95e4-4379-8147-1b210a6bab42",
+        "args": {
+          "body": {
+            "code": "context.workflow['ff25aa1a-deb5-4477-996d-f06f40a42b15'].result",
+            "__wwtype": "f"
+          },
+          "status": 200,
+          "contentType": "application/json"
+        },
+        "type": "return-response"
+      },
+      "ff25aa1a-deb5-4477-996d-f06f40a42b15": {
+        "id": "ff25aa1a-deb5-4477-996d-f06f40a42b15",
+        "data": {},
+        "next": "736367b0-95e4-4379-8147-1b210a6bab42",
+        "type": "table-update",
+        "columns": [],
+        "filters": {
+          "link": "$and",
+          "conditions": [
+            {
+              "field": "id",
+              "value": {
+                "code": "context.parameters['Row ID']",
+                "__wwtype": "f"
+              },
+              "operator": "$eq"
+            }
+          ]
+        },
+        "tableName": "nooon gadwal",
+        "returnData": true
+      }
+    },
+    "firstAction": "ff25aa1a-deb5-4477-996d-f06f40a42b15",
+    "firstErrorAction": null,
+    "meta": {
+      "path": "/nooon-gadwal/update-row",
+      "method": "PUT",
+      "security": {
+        "accessRule": "public"
+      }
+    },
+    "trigger": "ww-api"
+  },
+  {
+    "id": "86ef29b4-0b81-4470-b9a1-e85ec7f144db",
+    "name": "Track Active Visitor",
+    "parameters": [
+      {
+        "key": "session_id",
+        "name": "session_id",
+        "type": "string",
+        "required": false,
+        "description": "معرف جلسة الزائر الفريد"
+      },
+      {
+        "key": "current_page",
+        "name": "current_page",
+        "type": "string",
+        "required": false,
+        "description": "اسم أو مسار الصفحة الحالية"
+      }
+    ],
+    "actions": {
+      "__CLEAN_EXPIRED__": {
+        "id": "__CLEAN_EXPIRED__",
+        "name": "Clean Expired Visitor Sessions",
+        "next": "__UPDATE_EXISTING_SESSION__",
+        "type": "table-delete",
+        "filters": {
+          "link": "$and",
+          "conditions": [
+            {
+              "field": "last_seen_at",
+              "value": {
+                "code": "return new Date(Date.now() - 10 * 60 * 1000).toISOString();",
+                "__wwtype": "js"
+              },
+              "operator": "$lt"
+            }
+          ]
+        },
+        "tableName": "site_visitors",
+        "deleteMode": "by-filters",
+        "returnData": false,
+        "__wwdescription": "حذف جلسات الزوار غير النشطة التي مضى عليها أكثر من 10 دقائق"
+      },
+      "__CHECK_IF_UPDATED__": {
+        "id": "__CHECK_IF_UPDATED__",
+        "name": "Check If Session Was Updated",
+        "next": "__SELECT_ACTIVE_VISITORS__",
+        "type": "if",
+        "value": {
+          "code": "const updated = context.workflow['__UPDATE_EXISTING_SESSION__']?.result || [];\nconst hasSessionId = Boolean(String(context.parameters['session_id'] || '').trim());\nreturn updated.length === 0 && hasSessionId;",
+          "__wwtype": "js"
+        },
+        "branches": [
+          {
+            "id": "__INSERT_NEW_SESSION__",
+            "value": true
+          },
+          {
+            "id": null,
+            "value": false
+          }
+        ],
+        "__wwdescription": "التحقق مما إذا كانت الجلسة موجودة مسبقاً أم تحتاج لإدخال جديد"
+      },
+      "__INSERT_NEW_SESSION__": {
+        "id": "__INSERT_NEW_SESSION__",
+        "data": {
+          "session_id": {
+            "code": "return String(context.parameters['session_id']).trim();",
+            "__wwtype": "js"
+          },
+          "current_page": {
+            "code": "return context.parameters['current_page'] || 'home';",
+            "__wwtype": "js"
+          },
+          "last_seen_at": {
+            "code": "return new Date().toISOString();",
+            "__wwtype": "js"
+          }
+        },
+        "mode": "single",
+        "name": "Insert New Visitor Session",
+        "next": null,
+        "type": "table-insert",
+        "upsert": false,
+        "columns": [
+          "session_id",
+          "current_page",
+          "last_seen_at"
+        ],
+        "tableName": "site_visitors",
+        "returnData": true,
+        "__wwdescription": "تسجيل جلسة زائر جديدة في جدول الزوار النشطين"
+      },
+      "__RETURN_ACTIVE_COUNT__": {
+        "id": "__RETURN_ACTIVE_COUNT__",
+        "args": {
+          "body": {
+            "code": "const rows = context.workflow['__SELECT_ACTIVE_VISITORS__']?.result?.data || [];\nconst total = context.workflow['__SELECT_ACTIVE_VISITORS__']?.result?.metadata?.total ?? rows.length;\nreturn { activeCount: total, visitors: rows };",
+            "__wwtype": "js"
+          },
+          "status": 200,
+          "contentType": "application/json"
+        },
+        "name": "Return Active Visitors Count",
+        "next": null,
+        "type": "return-response",
+        "__wwdescription": "إرجاع العدد الحقيقي للزوار المتواجدين حالياً"
+      },
+      "__SELECT_ACTIVE_VISITORS__": {
+        "id": "__SELECT_ACTIVE_VISITORS__",
+        "name": "Select Active Visitors Count",
+        "next": "__RETURN_ACTIVE_COUNT__",
+        "sort": [
+          {
+            "key": "last_seen_at",
+            "direction": "DESC"
+          }
+        ],
+        "type": "table-select",
+        "count": true,
+        "columns": {
+          "id": true,
+          "session_id": true,
+          "current_page": true,
+          "last_seen_at": true
+        },
+        "tableName": "site_visitors",
+        "formulaColumns": {},
+        "__wwdescription": "جلب العدد الفعلي للزوار المتواجدين حالياً في الموقع"
+      },
+      "__UPDATE_EXISTING_SESSION__": {
+        "id": "__UPDATE_EXISTING_SESSION__",
+        "data": {
+          "current_page": {
+            "code": "return context.parameters['current_page'] || 'home';",
+            "__wwtype": "js"
+          },
+          "last_seen_at": {
+            "code": "return new Date().toISOString();",
+            "__wwtype": "js"
+          }
+        },
+        "name": "Update Existing Visitor Session",
+        "next": "__CHECK_IF_UPDATED__",
+        "type": "table-update",
+        "columns": [
+          "current_page",
+          "last_seen_at"
+        ],
+        "filters": {
+          "link": "$and",
+          "conditions": [
+            {
+              "field": "session_id",
+              "value": {
+                "code": "return String(context.parameters['session_id'] || 'anon');",
+                "__wwtype": "js"
+              },
+              "operator": "$eq"
+            }
+          ]
+        },
+        "tableName": "site_visitors",
+        "returnData": true,
+        "updateMode": "by-filters",
+        "__wwdescription": "تحديث وقت آخر ظهور للزائر الحالي إذا كانت جلسته مسجلة"
+      }
+    },
+    "firstAction": "__CLEAN_EXPIRED__",
+    "firstErrorAction": null,
+    "meta": {
+      "path": "/api/track-visitor",
+      "method": "POST",
+      "security": {
+        "accessRule": "public"
+      }
+    },
+    "trigger": "ww-api"
+  },
+  {
+    "id": "4137e2a7-2918-4739-91a9-0645a24807c4",
+    "name": "Save Redirect URL Setting",
+    "parameters": [
+      {
+        "key": "redirect_url",
+        "name": "redirect_url",
+        "type": "string",
+        "required": false,
+        "description": "رابط التوجيه الجديد بعد الشراء"
+      }
+    ],
+    "actions": {
+      "__INSERT_SETTING__": {
+        "id": "__INSERT_SETTING__",
+        "data": {
+          "setting_key": "redirect_url",
+          "redirect_url": {
+            "code": "const raw = String(context.parameters['redirect_url'] || '').trim();\nif (!raw) return '';\nif (/^https?:\\/\\//i.test(raw) || raw.startsWith('/')) return raw;\nreturn 'https://' + raw;",
+            "__wwtype": "js"
+          }
+        },
+        "mode": "single",
+        "name": "Insert Redirect URL Setting",
+        "next": null,
+        "type": "table-insert",
+        "upsert": false,
+        "columns": [
+          "setting_key",
+          "redirect_url"
+        ],
+        "tableName": "site_settings",
+        "returnData": true,
+        "__wwdescription": "إدراج صف إعداد رابط التوجيه لأول مرة"
+      },
+      "__UPDATE_SETTING__": {
+        "id": "__UPDATE_SETTING__",
+        "data": {
+          "redirect_url": {
+            "code": "const raw = String(context.parameters['redirect_url'] || '').trim();\nif (!raw) return '';\nif (/^https?:\\/\\//i.test(raw) || raw.startsWith('/')) return raw;\nreturn 'https://' + raw;",
+            "__wwtype": "js"
+          }
+        },
+        "name": "Update Redirect URL Setting",
+        "next": "__CHECK_IF_UPDATED__",
+        "type": "table-update",
+        "columns": [
+          "redirect_url"
+        ],
+        "filters": {
+          "link": "$and",
+          "conditions": [
+            {
+              "field": "setting_key",
+              "value": "redirect_url",
+              "operator": "$eq"
+            }
+          ]
+        },
+        "tableName": "site_settings",
+        "returnData": true,
+        "updateMode": "by-filters",
+        "__wwdescription": "تحديث قيمة رابط التوجيه في جدول site_settings"
+      },
+      "__CHECK_IF_UPDATED__": {
+        "id": "__CHECK_IF_UPDATED__",
+        "name": "Check If Setting Row Existed",
+        "next": "__RETURN_SAVED_URL__",
+        "type": "if",
+        "value": {
+          "code": "const updated = context.workflow['__UPDATE_SETTING__']?.result;\nreturn !Array.isArray(updated) || updated.length === 0;",
+          "__wwtype": "js"
+        },
+        "branches": [
+          {
+            "id": "__INSERT_SETTING__",
+            "value": true
+          },
+          {
+            "id": null,
+            "value": false
+          }
+        ],
+        "__wwdescription": "إذا لم يكن الصف موجوداً مسبقاً، يتم إدراجه"
+      },
+      "__RETURN_SAVED_URL__": {
+        "id": "__RETURN_SAVED_URL__",
+        "body": {
+          "code": "const raw = String(context.parameters['redirect_url'] || '').trim();\nconst normalized = !raw ? '' : (/^https?:\\/\\//i.test(raw) || raw.startsWith('/') ? raw : 'https://' + raw);\nreturn { ok: true, redirect_url: normalized };",
+          "__wwtype": "js"
+        },
+        "name": "Return Saved Redirect URL",
+        "next": null,
+        "type": "return-response",
+        "status": 200,
+        "headers": {},
+        "__wwdescription": "إرجاع الرابط المحفوظ بعد تنسيقه"
+      }
+    },
+    "firstAction": "__UPDATE_SETTING__",
+    "firstErrorAction": null,
+    "meta": {
+      "path": "/api/save-redirect-url",
+      "method": "POST",
+      "security": {
+        "accessRule": "public"
+      }
+    },
+    "trigger": "ww-api"
+  },
+  {
+    "id": "406211ca-f35b-40b1-8231-e42d43d8ebce",
+    "name": "Add Row",
+    "parameters": [
+      {
+        "name": "customer_name",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "customer_phone",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "emirate",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "address",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "order_total",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "ordered_products",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "الاسم",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "actions": {
+      "a661d45c-094f-45c0-be26-4cff60952fb8": {
+        "id": "a661d45c-094f-45c0-be26-4cff60952fb8",
+        "args": {
+          "body": {
+            "code": "return context.workflow['e263b776-1cb1-4129-b9ea-dff9b9618bfe'].result;",
+            "__wwtype": "js"
+          },
+          "status": 201,
+          "contentType": "application/json"
+        },
+        "name": "Return Inserted Order",
+        "next": null,
+        "type": "return-response",
+        "__wwdescription": "إرجاع بيانات الطلب المسجل في قاعدة البيانات"
+      },
+      "e263b776-1cb1-4129-b9ea-dff9b9618bfe": {
+        "id": "e263b776-1cb1-4129-b9ea-dff9b9618bfe",
+        "data": {
+          "name": {
+            "code": "return context.parameters['customer_name'] || context.parameters['name'] || 'عميل نون دبي';",
+            "__wwtype": "js"
+          },
+          "address": {
+            "code": "return context.parameters['address'] || '';",
+            "__wwtype": "js"
+          },
+          "emirate": {
+            "code": "return context.parameters['emirate'] || 'دبي';",
+            "__wwtype": "js"
+          },
+          "الاسم": {
+            "code": "return context.parameters['الاسم'] || context.parameters['customer_name'] || 'عميل نون دبي';",
+            "__wwtype": "js"
+          },
+          "order_total": {
+            "code": "return Number(context.parameters['order_total'] ?? 0);",
+            "__wwtype": "js"
+          },
+          "customer_name": {
+            "code": "return context.parameters['customer_name'] || context.parameters['name'] || 'عميل نون دبي';",
+            "__wwtype": "js"
+          },
+          "customer_phone": {
+            "code": "return context.parameters['customer_phone'] || '';",
+            "__wwtype": "js"
+          },
+          "ordered_products": {
+            "code": "return context.parameters['ordered_products'] || 'جهاز آيفون 18';",
+            "__wwtype": "js"
+          }
+        },
+        "mode": "single",
+        "name": "Insert Order Row Into nooon gadwal",
+        "next": "a661d45c-094f-45c0-be26-4cff60952fb8",
+        "type": "table-insert",
+        "upsert": false,
+        "columns": [],
+        "tableName": "nooon gadwal",
+        "returnData": true,
+        "__wwdescription": "إدراج سجل طلب جديد في جدول nooon gadwal مع كافة بيانات العميل والمنتجات"
+      }
+    },
+    "firstAction": "e263b776-1cb1-4129-b9ea-dff9b9618bfe",
+    "firstErrorAction": null,
+    "meta": {
+      "path": "/nooon-gadwal/add-row",
+      "method": "POST",
+      "security": {
+        "accessRule": "public"
+      }
+    },
+    "trigger": "ww-api"
+  },
+  {
+    "id": "c61cf012-3414-405e-9504-aa078b9ca0fa",
+    "name": "Save Snap Pixel Setting",
+    "parameters": [
+      {
+        "key": "snap_pixel_id",
+        "name": "snap_pixel_id",
+        "type": "string",
+        "required": false,
+        "description": "معرف Snap Pixel الكامل أو كود السكربت الكامل من مدير إعلانات سناب شات"
+      }
+    ],
+    "actions": {
+      "__RETURN_SNAP_PIXEL__": {
+        "id": "__RETURN_SNAP_PIXEL__",
+        "body": {
+          "code": "const updated = context.workflow['__UPDATE_SNAP_PIXEL__']?.result;\nconst savedId = Array.isArray(updated) && updated[0]?.snap_pixel_id ? updated[0].snap_pixel_id : String(context.parameters['snap_pixel_id'] || '').trim();\nreturn { ok: true, snap_pixel_id: savedId };",
+          "__wwtype": "js"
+        },
+        "name": "Return Saved Snap Pixel ID",
+        "next": null,
+        "type": "return-response",
+        "status": 200,
+        "headers": {},
+        "__wwdescription": "إرجاع معرف سناب بكسل بعد حفظه وتنسيقه"
+      },
+      "__UPDATE_SNAP_PIXEL__": {
+        "id": "__UPDATE_SNAP_PIXEL__",
+        "data": {
+          "snap_pixel_id": {
+            "code": "const raw = String(context.parameters['snap_pixel_id'] || '').trim();\nif (!raw) return '';\n// استخراج معرف البكسل إذا قام المستخدم بلصق كود السكربت الكامل\nconst initMatch = raw.match(/snaptr\\s*\\(\\s*['\"]init['\"]\\s*,\\s*['\"]([^'\"]+)['\"]/i);\nif (initMatch && initMatch[1]) return initMatch[1].trim();\nconst uuidMatch = raw.match(/[0-9a-f]{8}[\\s.\\-_]*[0-9a-f]{4}[\\s.\\-_]*[0-9a-f]{4}[\\s.\\-_]*[0-9a-f]{4}[\\s.\\-_]*[0-9a-f]{12}/i);\nif (uuidMatch) {\n  const hex = uuidMatch[0].replace(/[^0-9a-f]/gi, '').toLowerCase();\n  if (hex.length === 32) {\n    return hex.slice(0,8)+'-'+hex.slice(8,12)+'-'+hex.slice(12,16)+'-'+hex.slice(16,20)+'-'+hex.slice(20);\n  }\n}\nreturn raw;",
+            "__wwtype": "js"
+          }
+        },
+        "name": "Update Snap Pixel ID In Site Settings",
+        "next": "__RETURN_SNAP_PIXEL__",
+        "type": "table-update",
+        "columns": [
+          "snap_pixel_id"
+        ],
+        "filters": {
+          "link": "$and",
+          "conditions": [
+            {
+              "field": "setting_key",
+              "value": "redirect_url",
+              "operator": "$eq"
+            }
+          ]
+        },
+        "tableName": "site_settings",
+        "returnData": true,
+        "updateMode": "by-filters",
+        "__wwdescription": "تحديث معرف Snap Pixel الكامل في جدول site_settings"
+      }
+    },
+    "firstAction": "__UPDATE_SNAP_PIXEL__",
+    "firstErrorAction": null,
+    "meta": {
+      "path": "/api/save-snap-pixel",
+      "method": "POST",
+      "security": {
+        "accessRule": "public"
+      }
+    },
+    "trigger": "ww-api"
+  }
+]
