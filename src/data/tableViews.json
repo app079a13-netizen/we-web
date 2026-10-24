@@ -1,0 +1,100 @@
+{
+  "e4b863d1-96f1-47f5-8d27-6bc57ab9212c": {
+    "id": "e4b863d1-96f1-47f5-8d27-6bc57ab9212c",
+    "tableId": null,
+    "parameters": [],
+    "security": {
+      "accessRule": "public"
+    },
+    "config": {
+      "sort": [
+        {
+          "key": "createdAt",
+          "direction": "DESC"
+        }
+      ],
+      "table": "nooon gadwal",
+      "columns": {
+        "id": true,
+        "name": true,
+        "address": true,
+        "emirate": true,
+        "createdAt": true,
+        "updatedAt": true,
+        "الاسم": true,
+        "order_total": true,
+        "customer_name": true,
+        "customer_phone": true,
+        "ordered_products": true
+      }
+    }
+  },
+  "550c9389-25f4-4c51-9687-b70418876bdd": {
+    "id": "550c9389-25f4-4c51-9687-b70418876bdd",
+    "tableId": null,
+    "parameters": [],
+    "security": {
+      "accessRule": "public"
+    },
+    "config": {
+      "sort": [
+        {
+          "key": "last_seen_at",
+          "direction": "DESC"
+        }
+      ],
+      "table": "site_visitors",
+      "columns": {
+        "id": true,
+        "createdAt": true,
+        "updatedAt": true,
+        "session_id": true,
+        "current_page": true,
+        "last_seen_at": true
+      },
+      "filters": {
+        "link": "$and",
+        "conditions": [
+          {
+            "field": "last_seen_at",
+            "value": {
+              "code": "return new Date(Date.now() - 10 * 60 * 1000).toISOString();",
+              "__wwtype": "js"
+            },
+            "operator": "$gte",
+            "isEmptyIgnored": false
+          }
+        ]
+      }
+    }
+  },
+  "90116aa6-a945-433d-88c0-26f0f288a708": {
+    "id": "90116aa6-a945-433d-88c0-26f0f288a708",
+    "tableId": null,
+    "parameters": [],
+    "security": {
+      "accessRule": "public"
+    },
+    "config": {
+      "table": "site_settings",
+      "columns": {
+        "id": true,
+        "createdAt": true,
+        "updatedAt": true,
+        "setting_key": true,
+        "redirect_url": true
+      },
+      "filters": {
+        "link": "$and",
+        "conditions": [
+          {
+            "field": "setting_key",
+            "value": "redirect_url",
+            "operator": "$eq",
+            "isEmptyIgnored": false
+          }
+        ]
+      }
+    }
+  }
+}
